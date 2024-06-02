@@ -91,8 +91,8 @@ Meters
 | extend DistinctUnits = replace_regex(DistinctUnits, @'\(s\)$', 's')  // Always plural
 //
 | order by UnitOfMeasure asc
-// Output with quotes to avoid spaces being lost --
-| extend UnitOfMeasure = strcat('"', UnitOfMeasure, '"')
+// Write as a single column with quotes to maintain spaces for easy copy/paste to CSV -- 
+| project ["UnitOfMeasure,AccountTypes,PricingBlockSize,DistinctUnits"] = strcat('"', UnitOfMeasure, '",', iff(AccountTypes contains ',', '"', ''), AccountTypes, iff(AccountTypes contains ',', '"', ''), ',', PricingBlockSize ,',', DistinctUnits)
 ```
 
 <br>
@@ -121,7 +121,7 @@ The [Regions.csv](./Regions.csv) file contains data from several internal source
 
 <br>
 
-The [ResourceTypes.csv](./ResourceTypes.csv) file contains data from the Azure portal. The Build-OpenData script generates the flie without any additional work.
+The [ResourceTypes.csv](./ResourceTypes.csv) file contains data from the Azure portal. The Build-OpenData script generates the fie without any additional work.
 
 If you find a resource type is missing, add it to [ResourceTypes.Overrides.csv](./ResourceTypes.Overrides.json). The override file supports overriding names and icons.
 
