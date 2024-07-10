@@ -1,154 +1,33 @@
 ---
 layout: default
-title: Troubleshooting
-nav_order: 999
+parent: Troubleshooting
+title: Common errors
 description: 'Details and solutions for common issues you may experience.'
-permalink: /resources/troubleshoot
+permalink: /resources/troubleshooting/troubleshooting-errocode
 ---
 
-<span class="fs-9 d-block mb-4">Troubleshooting common errors</span>
-Sorry to hear you're having a problem. We're here to help!
+<span class="fs-9 d-block mb-4">Error codes</span>
+List of most common error messages.
 {: .fs-6 .fw-300 }
-
 ---
 
-This page has moved. [Click here](/finops-toolkit/docs/_reporting/troubleshooting/troubleshootingwizz.md) to see the new location.
+# 📇 Table of Contents
+- [📇 Table of Contents](#-table-of-contents)
+  - [The \<name\> resource provider is not registered in subscription \<guid\>](#the-name-resource-provider-is-not-registered-in-subscription-guid)
+  - [x\_PricingSubcategory shows the commitment discount ID](#x_pricingsubcategory-shows-the-commitment-discount-id)
+  - [Power BI: Reports are empty (no data)](#power-bi-reports-are-empty-no-data)
+    - [FinOps hubs: Ingestion container is empty](#finops-hubs-ingestion-container-is-empty)
+    - [FinOps hubs: Files available in the ingestion container](#finops-hubs-files-available-in-the-ingestion-container)
+  - [Power BI: Exception of type 'Microsoft.Mashup.Engine.Interface.ResourceAccessForbiddenException' was thrown](#power-bi-exception-of-type-microsoftmashupengineinterfaceresourceaccessforbiddenexception-was-thrown)
+  - [Power BI: The remote name could not be resolved: '\<storage-account\>.dfs.core.windows.net'](#power-bi-the-remote-name-could-not-be-resolved-storage-accountdfscorewindowsnet)
+  - [Power BI: We cannot convert the value null to type Logical](#power-bi-we-cannot-convert-the-value-null-to-type-logical)
+  - [FinOps hubs: RoleAssignmentUpdateNotPermitted](#finops-hubs-roleassignmentupdatenotpermitted)
+  - [FinOps hubs: We cannot convert the value null to type Table](#finops-hubs-we-cannot-convert-the-value-null-to-type-table)
+  - [FinOps hubs: Deployment failed with RoleAssignmentUpdateNotPermitted error](#finops-hubs-deployment-failed-with-roleassignmentupdatenotpermitted-error)
+  - [Data Factory:  Operation on target Convert CSV failed: ErrorCode=MappingColumnNameNotFoundInSourceFile,'Type=Microsoft.DataTransfer.Common.Shared.HybridDeliveryException,Message=Column 'AvailabilityZone' specified in column mapping cannot be found](#data-factory--operation-on-target-convert-csv-failed-errorcodemappingcolumnnamenotfoundinsourcefiletypemicrosoftdatatransfercommonsharedhybriddeliveryexceptionmessagecolumn-availabilityzone-specified-in-column-mapping-cannot-be-found)
 
-<!---- 
-<blockquote class="important" markdown="1">
-  _Source code within the FinOps toolkit is provided as-is with no guarantees and is not officially covered by Microsoft Support. However, the underlying services **are** fully supported. If you encounter an issue, we generally recommend that you [create an issue](https://aka.ms/ftk/idea) **and** file a support request. We will do our best to help you resolve any issues through GitHub issues and discussions but Microsoft Support will be better equipped to resolve issues in the underlying products and services. Microsoft Support may request code samples to help resolve the issue, which can be provided from the GitHub repository._
-</blockquote>
 
-If you run into an issue with a deployment and need to re-deploy, you can usually re-run the deployment. If you change the name, we recommend deleting the resource group. If you delete the individual resources, make sure all resources are fully deleted. Some services, like Key Vault, have a "soft delete" feature where they keep the resources around so they are easily recovered. These services usually have an option to manage deleted resources.
 
-Here are a few simple solutions to issues others have reported:
-
-- [BadHubVersion](#badhubversion)
-- [InvalidExportContainer](#invalidexportcontainer)
-- [InvalidExportVersion](#invalidexportversion)
-- [InvalidHubVersion](#invalidhubversion)
-- [InvalidScopeId](#invalidscopeid)
-- [ExportNotFound](#exportnotfound)
-- [NoDataIngested](#nodataingested)
-- [UnknownExportFile](#unknownexportfile)
-- [UnknownHubVersion](#unknownhubversion)
-- [UnsupportedExportType](#unsupportedexporttype)
-- [The \<name\> resource provider is not registered in subscription \<guid\>](#the-name-resource-provider-is-not-registered-in-subscription-guid)
-- [x\_PricingSubcategory shows the commitment discount ID](#x_pricingsubcategory-shows-the-commitment-discount-id)
-- [Power BI: Reports are empty (no data)](#power-bi-reports-are-empty-no-data)
-- [Power BI: Exception of type 'Microsoft.Mashup.Engine.Interface.ResourceAccessForbiddenException' was thrown](#power-bi-exception-of-type-microsoftmashupengineinterfaceresourceaccessforbiddenexception-was-thrown)
-- [Power BI: The remote name could not be resolved: '\<storage-account\>.dfs.core.windows.net'](#power-bi-the-remote-name-could-not-be-resolved-storage-accountdfscorewindowsnet)
-- [Power BI: We cannot convert the value null to type Logical](#power-bi-we-cannot-convert-the-value-null-to-type-logical)
-- [FinOps hubs: RoleAssignmentUpdateNotPermitted](#finops-hubs-roleassignmentupdatenotpermitted)
-- [FinOps hubs: We cannot convert the value null to type Table](#finops-hubs-we-cannot-convert-the-value-null-to-type-table)
-- [FinOps hubs: Deployment failed with RoleAssignmentUpdateNotPermitted error](#finops-hubs-deployment-failed-with-roleassignmentupdatenotpermitted-error)
-
-Didn't find what you're looking for?
-
-[Start a discussion](https://aka.ms/finops/toolkit/discuss){: .btn .btn-primary .mb-4 .mb-md-0 .mr-4 }
-[Create an issue](https://aka.ms/ftk/idea){: .btn .mt-2 .mb-4 .mb-md-0 .mr-4 }
-
----
-
-## BadHubVersion
-
-<sup>Severity: Critical</sup>
-
-FinOps hubs 0.2 is not operational. Please upgrade to version 0.3 or later.
-
-**Mitigation**: Upgrade to the latest version of [FinOps hubs](../_reporting/hubs/README.md).
-
----
-
-## InvalidExportContainer
-
-<sup>Severity: Critical</sup>
-
-This file looks like it may be exported from Cost Management but it is not in the correct container.
-
-**Mitigation**: Update your Cost Management export to point to the 'msexports' storage container. The 'ingestion' container is only used for querying ingested cost data.
-
----
-
-## InvalidExportVersion
-
-<sup>Severity: Critical</sup>
-
-FinOps hubs requires FOCUS cost exports but this file looks like a legacy Cost Management export.
-
-**Mitigation**: Create a new Cost Management export for FOCUS cost and either stop the current export or change it to export to a different storage container.
-
----
-
-## InvalidHubVersion
-
-<sup>Severity: Critical</sup>
-
-FinOps hubs 0.1.1 and earlier do not work with the [Data ingestion Power BI report](../_reporting/power-bi/data-ingestion.md).
-
-**Mitigation**: Upgrade to the latest version of [FinOps hubs](../_reporting/hubs/README.md) or download Power BI reports from [release 0.1.1](https://github.com/microsoft/finops-toolkit/releases/tag/v0.1.1).
-
----
-
-## InvalidScopeId
-
-<sup>Severity: Informational</sup>
-
-The export path is not a valid scope ID. FinOps hubs expects the export path to be an Azure resource ID for the scope the export was created to simplify management. This shouldn't cause failures, but may result in confusing results for scope-related reports."
-
-**Mitigation**: Update the storage path for the Cost Management export to use the full Azure resource ID for the scope.
-
----
-
-## ExportNotFound
-
-<sup>Severity: Critical</sup>
-
-Cost Management data has not been exported.
-
-**Mitigation**: Create a new FOCUS export in [Cost Management](https://aka.ms/exportsv2). After created, select 'Run now' to start the export process.
-
----
-
-## NoDataIngested
-
-<sup>Severity: Critical</sup>
-
-The export path is not a valid scope ID. FinOps hubs expects the export path to be an Azure resource ID for the scope the export was created to simplify management. This shouldn't cause failures, but may result in confusing results for scope-related reports.
-
-**Mitigation**: Update the storage path for the Cost Management export to use the full Azure resource ID for the scope.
-
----
-
-## UnknownExportFile
-
-<sup>Severity: Informational</sup>
-
-The file in hub storage does not look like it was exported from Cost Management. File will be ignored.
-
-**Mitigation**: The 'msexports' container is intended for Cost Management exports only. Please move other files in another storage container.
-
----
-
-## UnknownHubVersion
-
-<sup>Severity: Critical</sup>
-
-Unable to identify the version of FinOps hubs from the settings file. Please verify settings are correct. FinOps hubs 0.1.1 and earlier does not work with this Power BI report.
-
-**Mitigation**: Upgrade to the latest version of [FinOps hubs](../_reporting/hubs/README.md) or download Power BI reports from https://github.com/microsoft/finops-toolkit/releases/tag/v0.1.1
-
----
-
-## UnsupportedExportType
-
-<sup>Severity: Warning</sup>
-
-The export manifest in hub storage indicates the export was for an unsupported dataset. Exported data will be reported as ingestion errors.
-
-**Mitigation**: Create a new Cost Management export for FOCUS cost and either stop the current export or change it to export to a different storage container.
-
----
 
 ## The \<name> resource provider is not registered in subscription \<guid>
 
@@ -260,5 +139,12 @@ To fix that issue you will have to remove the stale identity:
 
 ---
 
-<br>
---->
+## Data Factory:  Operation on target Convert CSV failed: ErrorCode=MappingColumnNameNotFoundInSourceFile,'Type=Microsoft.DataTransfer.Common.Shared.HybridDeliveryException,Message=Column 'AvailabilityZone' specified in column mapping cannot be found
+
+If the ingestion pipeline is not running and it is showing this error message:
+
+```json
+Operation on target Convert CSV failed: ErrorCode=MappingColumnNameNotFoundInSourceFile,'Type=Microsoft.DataTransfer.Common.Shared.HybridDeliveryException,Message=Column 'AvailabilityZone' specified in column mapping cannot be found in 'part_0_0001.csv' source file.,Source=Microsoft.DataTransfer.ClientLibrary,'
+```
+**Solution:** This error means that the Cost Export is not set to FOCUS 1.0 (Preview). Review the export settings and ensure it is configured to FOCUS 1.0 (Preview), then run the pipeline again.
+---
